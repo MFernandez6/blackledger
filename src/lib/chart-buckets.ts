@@ -9,7 +9,6 @@ import {
   eachMonthOfInterval,
   eachQuarterOfInterval,
   endOfDay,
-  endOfMonth,
   format,
   startOfDay,
   startOfHour,
