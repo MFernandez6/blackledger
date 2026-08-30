@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#05070B"/>
+  <rect x="32" y="32" width="448" height="448" fill="none" stroke="#C6A85B" stroke-width="8"/>
+
+  <line x1="150" y1="132" x2="362" y2="132" stroke="#7A9A86" stroke-width="6"/>
+  <line x1="150" y1="176" x2="362" y2="176" stroke="#7A9A86" stroke-width="6"/>
+  <line x1="150" y1="220" x2="362" y2="220" stroke="#7A9A86" stroke-width="6"/>
+  <line x1="150" y1="264" x2="362" y2="264" stroke="#7A9A86" stroke-width="6"/>
+  <line x1="214" y1="118" x2="214" y2="278" stroke="#7A9A86" stroke-width="6"/>
+  <text x="256" y="414" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="70" font-weight="700" fill="#7A9A86" letter-spacing="12">LD</text>
+</svg>

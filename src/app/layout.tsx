@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Cinzel } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
@@ -26,6 +26,23 @@ export const metadata: Metadata = {
   title: "BLACKLEDGER™ — Blackline Public Adjusters LLC",
   description:
     "Contingency fee tracking, payout reconciliation, and cash-flow visibility — Blackline Public Adjusters LLC",
+  applicationName: "BLACKLEDGER",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "BLACKLEDGER",
+  },
+  icons: {
+    icon: [
+      { url: "/icons/icon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/icon-180.png", sizes: "180x180", type: "image/png" }],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#05070b",
 };
 
 export default function RootLayout({
