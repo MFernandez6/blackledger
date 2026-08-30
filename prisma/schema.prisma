@@ -1,0 +1,241 @@
+// BLACKLEDGER — Financial & Payout Tracking
+// Blackline Public Adjusters LLC
+//
+// Claim status lives in BLACKBOX. This schema stores a read-only snapshot
+// plus the financial layer (schedules, payouts, splits). Application code
+// must never write ClaimSnapshot.status except via BLACKBOX sync.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite has no native enums. Constrained string values live in src/lib/types.ts.
+
+// ---------------------------------------------------------------------------
+// Staff (auth principal)
+// ---------------------------------------------------------------------------
+
+model Staff {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  /// ADMIN | FINANCE | VIEWER
+  role         String   @default("FINANCE")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  payoutsRecorded Payout[]           @relation("PayoutRecordedBy")
+  documents       PayoutDocument[]   @relation("DocumentUploader")
+  auditEvents     LedgerAuditEvent[] @relation("AuditActor")
+}
+
+// ---------------------------------------------------------------------------
+// FeeSchedule — contingency % by claim type, caps per Fla. Stat. § 626.854
+// ---------------------------------------------------------------------------
+
+model FeeSchedule {
+  id                  String   @id @default(cuid())
+  /// PROPERTY | PROPERTY_CAT | PIP | DENIED_CLAIM
+  code                String   @unique
+  /// PROPERTY | PIP | DENIED_CLAIM
+  claimType           String
+  isCatClaim          Boolean  @default(false)
+  label               String
+  contingencyPercent  Float
+  statutoryCapPercent Float
+  statuteCite         String   @default("Fla. Stat. § 626.854(11)")
+  notes               String?
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// ClaimSnapshot — read-only mirror of BLACKBOX claim financial fields.
+// status is written ONLY by syncFromBlackbox / seed. Never by payout APIs.
+// ---------------------------------------------------------------------------
+
+model ClaimSnapshot {
+  id                    String    @id @default(cuid())
+  blackboxClaimId       String    @unique
+  claimNumber           String    @unique
+  /// Mirrored from BLACKBOX. Not editable in this product.
+  status                String
+  lossType              String
+  /// PROPERTY | PIP | DENIED_CLAIM
+  claimType             String    @default("PROPERTY")
+  isCatClaim            Boolean   @default(false)
+  dateOfLoss            DateTime
+  propertyAddress       String
+  county                String
+  zipCode               String
+  carrierName           String?
+  policyNumber          String?
+  estimatedValue        Float?
+  demandAmount          Float?
+  settlementAmount      Float?
+  settlementDate        DateTime?
+  contingencyFeePercent Float
+  assignedAdjuster      String?
+  primaryClaimant       String
+  intakeNumber          String?
+  syncedAt              DateTime  @default(now())
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  payouts Payout[]
+
+  @@index([status])
+  @@index([claimType, isCatClaim])
+  @@index([settlementDate])
+}
+
+// ---------------------------------------------------------------------------
+// Payout — financial layer for a claim (does not mutate claim status)
+// ---------------------------------------------------------------------------
+
+model Payout {
+  id                  String    @id @default(cuid())
+  claimSnapshotId     String
+  claimNumber         String
+  settlementAmount    Float
+  feePercentApplied   Float
+  feeEarned           Float
+  statutoryCapPercent Float
+  capApplied          Boolean   @default(false)
+  disbursementDate    DateTime?
+  /// PENDING | APPROVED | DISBURSED | HELD | VOID
+  status              String    @default("PENDING")
+  notes               String?
+  recordedById        String
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  claim      ClaimSnapshot    @relation(fields: [claimSnapshotId], references: [id], onDelete: Restrict)
+  recordedBy Staff            @relation("PayoutRecordedBy", fields: [recordedById], references: [id], onDelete: Restrict)
+  documents  PayoutDocument[]
+  splits     PartnerSplit[]
+
+  @@index([claimSnapshotId])
+  @@index([status, disbursementDate])
+  @@index([claimNumber])
+}
+
+model PayoutDocument {
+  id           String   @id @default(cuid())
+  payoutId     String
+  fileName     String
+  fileUrl      String
+  fileSizeBytes Int
+  mimeType     String
+  uploadedById String
+  uploadedAt   DateTime @default(now())
+
+  payout     Payout @relation(fields: [payoutId], references: [id], onDelete: Cascade)
+  uploadedBy Staff  @relation("DocumentUploader", fields: [uploadedById], references: [id], onDelete: Restrict)
+
+  @@index([payoutId])
+}
+
+// ---------------------------------------------------------------------------
+// Partner — white-label / attorney referral counterparties (from BLACKGATE)
+// ---------------------------------------------------------------------------
+
+model Partner {
+  id                  String   @id @default(cuid())
+  slug                String   @unique
+  name                String
+  brand               String?
+  /// BLACKGATE IntakeSource slug when known
+  sourceSlug          String?
+  defaultSplitPercent Float    @default(0)
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  splits PartnerSplit[]
+
+  @@index([isActive])
+}
+
+model PartnerSplit {
+  id               String    @id @default(cuid())
+  payoutId         String
+  partnerId        String
+  intakeNumber     String?
+  referralSource   String?
+  referringContact String?
+  splitPercent     Float
+  splitAmount      Float
+  /// ACCRUED | DUE | PAID | VOID
+  status           String    @default("ACCRUED")
+  paidAt           DateTime?
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  payout  Payout  @relation(fields: [payoutId], references: [id], onDelete: Restrict)
+  partner Partner @relation(fields: [partnerId], references: [id], onDelete: Restrict)
+
+  @@index([partnerId, status])
+  @@index([payoutId])
+}
+
+// ---------------------------------------------------------------------------
+// ReferralTag — inbound from BLACKGATE POST /api/referral-tags
+// ---------------------------------------------------------------------------
+
+model ReferralTag {
+  id               String   @id @default(cuid())
+  intakeNumber     String
+  claimNumber      String?
+  partnerName      String?
+  referringContact String?
+  feeTerms         String?
+  feePercent       Float?
+  receivedAt       DateTime @default(now())
+
+  @@index([intakeNumber])
+  @@index([claimNumber])
+}
+
+// ---------------------------------------------------------------------------
+// CashFlowSnapshot — persisted rolling view (recomputed on demand)
+// ---------------------------------------------------------------------------
+
+model CashFlowSnapshot {
+  id               String   @id @default(cuid())
+  asOf             DateTime @default(now())
+  receivables      Float
+  pipelineValue    Float
+  realizedRevenue  Float
+  realizedYtd      Float
+  aging030         Float
+  aging3160        Float
+  aging6190        Float
+  aging90plus      Float
+  claimCountActive Int
+  payoutCountOpen  Int
+}
+
+model LedgerAuditEvent {
+  id         String   @id @default(cuid())
+  actorId    String
+  action     String
+  entityType String
+  entityId   String?
+  summary    String
+  createdAt  DateTime @default(now())
+
+  actor Staff @relation("AuditActor", fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([createdAt])
+  @@index([actorId])
+}

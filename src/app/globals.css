@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Visual language aligned to Blackline Public Adjusters
+  (BLACKBOX / BLACKGATE / BLACKMIRROR):
+  navy field, tracked Inter labels, Cinzel display.
+  Product accent is desaturated forest green — financial, not "money green".
+*/
+
+@layer base {
+  :root {
+    --background: 216 49% 12%;
+    --foreground: 0 0% 96%;
+    --card: 216 45% 10%;
+    --card-foreground: 0 0% 96%;
+    --popover: 216 45% 9%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 148 14% 42%;
+    --primary-foreground: 216 49% 12%;
+    --secondary: 216 40% 16%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 216 30% 18%;
+    --muted-foreground: 215 15% 55%;
+    --accent: 148 14% 42%;
+    --accent-foreground: 216 49% 12%;
+    --destructive: 0 100% 27%;
+    --destructive-foreground: 0 0% 96%;
+    --border: 216 25% 22%;
+    --input: 216 25% 22%;
+    --ring: 148 14% 42%;
+    --radius: 0px;
+
+    --brand-navy: #0f1c2e;
+    --brand-navy-deep: #020617;
+    --brand-gold: #c6a85b;
+    --brand-green: #5c7a68;
+    --brand-green-soft: #7a9a86;
+    --brand-white: #f4f4f4;
+    --brand-slate: #8b95a5;
+    --brand-hairline: rgba(244, 244, 244, 0.12);
+    --denied: #e89090;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground;
+    font-family: var(--font-sans), system-ui, sans-serif;
+    background-color: var(--brand-navy);
+    color: var(--brand-white);
+  }
+
+  ::selection {
+    background: var(--brand-green);
+    color: var(--brand-navy);
+  }
+
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"] {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  input[type="date"]::-webkit-datetime-edit {
+    min-width: 0;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-brand-slate;
+  }
+
+  .hairline {
+    @apply border-t border-brand-white/10;
+  }
+
+  .panel {
+    @apply border border-brand-white/10 bg-brand-navy-deep/40;
+  }
+
+  .wordmark-blackline {
+    @apply font-serif text-brand-green font-bold uppercase tracking-[0.2em];
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-print {
+    @apply print:hidden;
+  }
+}
+
+@media print {
+  header,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .print-sheet {
+    color: black !important;
+  }
+
+  .print-sheet .text-brand-white,
+  .print-sheet .text-brand-white\/90,
+  .print-sheet .text-brand-green,
+  .print-sheet .text-brand-green-soft,
+  .print-sheet .text-brand-slate {
+    color: black !important;
+  }
+
+  .print-sheet .border-brand-white\/10 {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+  }
+
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+}
