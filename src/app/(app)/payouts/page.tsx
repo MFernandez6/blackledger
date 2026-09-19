@@ -23,7 +23,7 @@ export default async function PayoutsPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="eyebrow">Reconciliation</p>
-          <h1 className="mt-2 font-serif text-2xl tracking-[0.12em] text-brand-white">
+          <h1 className="mt-2 font-serif text-3xl text-brand-gold">
             Payout queue
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-brand-white/70">

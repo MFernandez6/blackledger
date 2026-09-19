@@ -14,7 +14,7 @@ export function AgingTable({ aging }: { aging: AgingBucket[] }) {
             Unpaid fee balances, aged from payout open date.
           </p>
         </div>
-        <p className="font-mono text-sm text-brand-green-soft">
+        <p className="font-mono text-sm text-brand-gold">
           {formatCurrency(total, { cents: true })} · {count}
         </p>
       </div>

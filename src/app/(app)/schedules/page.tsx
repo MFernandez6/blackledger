@@ -16,7 +16,7 @@ export default async function SchedulesPage() {
     <div className="space-y-6">
       <div>
         <p className="eyebrow">Florida public adjuster</p>
-        <h1 className="mt-2 font-serif text-2xl tracking-[0.12em] text-brand-white">
+        <h1 className="mt-2 font-serif text-3xl text-brand-gold">
           Fee schedules
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-brand-white/70">

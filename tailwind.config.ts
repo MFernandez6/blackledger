@@ -70,8 +70,7 @@ const config: Config = {
           navy: "#0F1C2E",
           "navy-deep": "#020617",
           gold: "#C6A85B",
-          green: "#5C7A68",
-          "green-soft": "#7A9A86",
+          amber: "#E8B84A",
           white: "#F4F4F4",
           slate: "#8B95A5",
         },
@@ -92,6 +91,7 @@ const config: Config = {
         lg: "none",
         xl: "none",
         "2xl": "none",
+        gold: "0 0 24px rgba(198, 168, 91, 0.08)",
       },
       keyframes: {
         "fade-in": {

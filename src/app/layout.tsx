@@ -22,6 +22,8 @@ const cinzel = Cinzel({
   display: "swap",
 });
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "BLACKLEDGER™ — Blackline Public Adjusters LLC",
   description:
@@ -29,8 +31,11 @@ export const metadata: Metadata = {
   applicationName: "BLACKLEDGER",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "black",
     title: "BLACKLEDGER",
+  },
+  formatDetection: {
+    telephone: false,
   },
   icons: {
     icon: [
@@ -42,6 +47,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
   themeColor: "#05070b",
 };
 

@@ -1,9 +1,11 @@
 import { buildChartSeries, payoutsToEvents } from "@/lib/chart-buckets";
 import { computeCashFlow } from "@/lib/cash-flow";
+import { refreshSuiteClaimsIfStale } from "@/lib/integrations/ingest-claims";
 import { prisma } from "@/lib/prisma";
 import type { Timeframe } from "@/lib/types";
 
 export async function loadDashboard(timeframe: Timeframe = "1M") {
+  await refreshSuiteClaimsIfStale();
   const [snapshots, payouts, schedules, partners, splits] = await Promise.all([
     prisma.claimSnapshot.findMany({
       orderBy: { updatedAt: "desc" },

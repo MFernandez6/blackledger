@@ -4,22 +4,22 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap font-sans text-[10px] font-bold uppercase tracking-[0.2em] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-green/50 disabled:pointer-events-none disabled:opacity-40 border",
+  "inline-flex items-center justify-center whitespace-nowrap font-sans text-[10px] font-bold uppercase tracking-[0.2em] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-gold/50 disabled:pointer-events-none disabled:opacity-40 border",
   {
     variants: {
       variant: {
         default:
-          "border-brand-green/30 bg-brand-navy text-brand-green-soft hover:bg-brand-green/10 hover:border-brand-green/50",
+          "border-brand-gold/25 bg-brand-navy text-brand-gold shadow-gold hover:bg-brand-gold/10 hover:border-brand-gold/40",
         solid:
-          "border-brand-green bg-brand-green text-brand-navy hover:bg-brand-green-soft",
+          "border-brand-gold bg-brand-gold text-brand-navy hover:bg-[#d4ba74]",
         outline:
-          "border-brand-white/15 bg-transparent text-brand-white/80 hover:border-brand-green/40 hover:text-brand-green-soft",
+          "border-brand-white/15 bg-transparent text-brand-white/80 hover:border-brand-gold/40 hover:text-brand-gold",
         ghost:
-          "border-transparent bg-transparent text-brand-slate hover:text-brand-green-soft",
+          "border-transparent bg-transparent text-brand-slate hover:text-brand-gold",
         destructive:
           "border-denied/50 bg-denied-muted text-denied-soft hover:bg-denied/20",
         secondary:
-          "border-brand-white/15 bg-brand-navy-deep/60 text-brand-white hover:border-brand-green/30",
+          "border-brand-white/15 bg-brand-navy-deep/60 text-brand-white hover:border-brand-gold/30",
       },
       size: {
         default: "h-10 px-5 py-2",

@@ -101,6 +101,6 @@ Matches the forensic BLACKLINE palette:
 
 - Background `#0F1C2E`, text `#F4F4F4`, hairlines `#2A2A2A`
 - Border radius `0`
-- Accent is desaturated forest `#5C7A68` — financial, not money-green
+- Accent is BLACKLINE gold `#C6A85B` — same mark as BLACKGATE / BLACKBOX
 - JetBrains Mono for figures / claim numbers; Inter for body; Cinzel for display
 # blackledger

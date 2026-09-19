@@ -33,7 +33,7 @@ export default async function DashboardPage({
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="eyebrow">Firm ledger</p>
-          <h1 className="mt-2 font-serif text-2xl tracking-[0.12em] text-brand-white">
+          <h1 className="mt-2 font-serif text-3xl text-brand-gold">
             Cash position
           </h1>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-brand-white/70">
@@ -55,14 +55,14 @@ export default async function DashboardPage({
       <CashFlowKpis cash={cash} />
       <RevenueChart series={series} />
 
-      <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="grid min-w-0 gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <AgingTable aging={cash.aging} />
         <section>
           <div className="mb-3 flex items-end justify-between">
             <p className="eyebrow">Recent files</p>
             <Link
               href="/claims"
-              className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-brand-green-soft"
+              className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold"
             >
               All files
             </Link>
@@ -75,7 +75,7 @@ export default async function DashboardPage({
                 className="flex items-center justify-between gap-3 border-b border-brand-white/5 px-4 py-3 last:border-0 hover:bg-brand-white/5"
               >
                 <div>
-                  <p className="font-mono text-sm text-brand-green-soft">{c.claimNumber}</p>
+                  <p className="font-mono text-sm text-brand-gold">{c.claimNumber}</p>
                   <p className="text-xs text-brand-white/70">{c.primaryClaimant}</p>
                 </div>
                 <div className="text-right">

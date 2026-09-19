@@ -19,9 +19,9 @@ export function SyncButton() {
       return;
     }
     if (res.dryRun) {
-      toast.message("BLACKBOX dry-run — local snapshots unchanged.");
+      toast.message("BLACKBOX dry-run — snapshots unchanged.");
     } else {
-      toast.success(`Pulled ${res.pulled} claim snapshots.`);
+      toast.success(`Pulled ${res.pulled} BLACKBOX files.`);
     }
     router.refresh();
   }

@@ -16,7 +16,7 @@ export default async function PrintReportPage() {
 
       <header>
         <p className="eyebrow">BLACKLEDGER · accounting handoff</p>
-        <h1 className="mt-2 font-serif text-2xl tracking-[0.12em]">
+        <h1 className="mt-2 font-serif text-3xl text-brand-gold">
           Cash-flow report
         </h1>
         <p className="mt-1 text-sm text-brand-slate">

@@ -21,7 +21,7 @@ export default async function PartnersPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="eyebrow">WHITE-LABEL / REFERRAL</p>
-          <h1 className="mt-2 font-serif text-2xl tracking-[0.12em] text-brand-white">
+          <h1 className="mt-2 font-serif text-3xl text-brand-gold">
             Partner payouts
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-brand-white/70">

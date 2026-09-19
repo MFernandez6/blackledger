@@ -9,8 +9,9 @@
     "start": "next start -p 3003",
     "lint": "next lint",
     "db:migrate": "prisma migrate dev",
-    "db:push": "prisma db push",
+    "db:push": "echo 'Refusing prisma db push: this database is shared with BLACKBOX. Apply prisma/sql/*.sql instead.' && exit 1",
     "db:seed": "prisma db seed",
+    "db:bootstrap": "tsx prisma/bootstrap.ts",
     "db:studio": "prisma studio",
     "db:reset": "ALLOW_DESTRUCTIVE_SEED=1 prisma db push --force-reset && ALLOW_DESTRUCTIVE_SEED=1 prisma db seed"
   },

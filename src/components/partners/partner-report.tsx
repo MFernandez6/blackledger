@@ -52,14 +52,50 @@ export function PartnerReport({
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-px bg-brand-white/10 sm:grid-cols-3">
+      <div className="grid grid-cols-3 gap-px bg-brand-white/10">
         <Stat label="Accrued" value={totals.all} />
         <Stat label="Due" value={totals.due} />
         <Stat label="Paid" value={totals.paid} />
       </div>
 
-      <div className="overflow-x-auto border border-brand-white/10">
-        <table className="w-full min-w-[720px] text-left text-sm">
+      <div className="space-y-px bg-brand-white/10 xl:hidden">
+        {rows.map((row) => (
+          <div key={row.id} className="bg-brand-navy px-4 py-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-sm text-brand-white">{row.partnerName}</p>
+                <p className="mt-1 font-mono text-xs text-brand-gold">
+                  {row.claimNumber}
+                  {row.intakeNumber ? (
+                    <span className="ml-2 text-brand-slate">{row.intakeNumber}</span>
+                  ) : null}
+                </p>
+              </div>
+              <p className="font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-brand-white/80">
+                {row.status}
+              </p>
+            </div>
+            <div className="mt-3 flex justify-between font-mono text-xs text-brand-white">
+              <span>{formatPercent(row.splitPercent)}</span>
+              <span>{formatCurrency(row.splitAmount, { cents: true })}</span>
+            </div>
+            {canWrite && row.status !== "PAID" && row.status !== "VOID" ? (
+              <Button
+                className="mt-3"
+                size="sm"
+                variant="outline"
+                disabled={busy === row.id}
+                onClick={() => markPaid(row.id)}
+              >
+                Mark paid
+              </Button>
+            ) : null}
+          </div>
+        ))}
+      </div>
+
+      <div className="hidden overflow-x-auto border border-brand-white/10 xl:block">
+        <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-brand-white/10">
               <th className="eyebrow px-4 py-3 font-normal">Partner</th>
@@ -75,7 +111,7 @@ export function PartnerReport({
             {rows.map((row) => (
               <tr key={row.id} className="border-b border-brand-white/5 last:border-0">
                 <td className="px-4 py-3 text-brand-white">{row.partnerName}</td>
-                <td className="px-4 py-3 font-mono text-brand-green-soft">
+                <td className="px-4 py-3 font-mono text-brand-gold">
                   {row.claimNumber}
                   {row.intakeNumber ? (
                     <span className="ml-2 text-brand-slate">{row.intakeNumber}</span>
@@ -118,7 +154,7 @@ function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="bg-brand-navy px-4 py-4">
       <p className="eyebrow">{label}</p>
-      <p className="mt-2 font-mono text-xl text-brand-white">
+      <p className="mt-2 font-mono text-lg text-brand-white sm:text-xl">
         {formatCurrency(value, { cents: true })}
       </p>
     </div>

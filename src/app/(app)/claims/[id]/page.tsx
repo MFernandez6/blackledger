@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { canWriteFinance, getSession } from "@/lib/auth";
 import { applyFeeSchedule, scheduleCodeFor } from "@/lib/fee-math";
+import { refreshSuiteClaimsIfStale } from "@/lib/integrations/ingest-claims";
 import { prisma } from "@/lib/prisma";
 import { ClaimFinancialDetail } from "@/components/claims/claim-financial-detail";
 import type { ClaimType } from "@/lib/types";
@@ -12,6 +13,7 @@ export default async function ClaimFinancePage({
 }: {
   params: { id: string };
 }) {
+  await refreshSuiteClaimsIfStale();
   const session = await getSession();
   const claim = await prisma.claimSnapshot.findUnique({
     where: { id: params.id },

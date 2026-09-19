@@ -32,10 +32,10 @@ export const STATUS_LABELS: Record<ClaimStatus, string> = {
 
 export const STATUS_BADGE_CLASS: Record<ClaimStatus, string> = {
   INTAKE: "border-brand-white/15 text-brand-white/70",
-  UNDER_REVIEW: "border-brand-green/30 text-brand-green-soft",
-  INVESTIGATION: "border-brand-green/45 text-brand-green-soft",
+  UNDER_REVIEW: "border-brand-gold/30 text-brand-gold/90",
+  INVESTIGATION: "border-brand-gold/45 text-brand-gold",
   FILED: "border-brand-white/25 text-brand-white",
-  NEGOTIATING: "border-brand-green/60 bg-brand-green/10 text-brand-green-soft",
+  NEGOTIATING: "border-brand-gold/60 bg-brand-gold/10 text-brand-gold",
   SETTLED: "border-brand-white/40 text-brand-white",
   CLOSED: "border-brand-white/10 text-brand-slate",
   DENIED: "border-denied/50 bg-denied-muted text-denied-soft",
@@ -60,8 +60,8 @@ export const PAYOUT_STATUS_LABELS: Record<PayoutStatus, string> = {
 
 export const PAYOUT_STATUS_CLASS: Record<PayoutStatus, string> = {
   PENDING: "border-brand-white/25 text-brand-white/80",
-  APPROVED: "border-brand-green/50 bg-brand-green/10 text-brand-green-soft",
-  DISBURSED: "border-brand-green/70 bg-brand-green/15 text-brand-green-soft",
+  APPROVED: "border-brand-gold/50 bg-brand-gold/10 text-brand-gold",
+  DISBURSED: "border-brand-gold/70 bg-brand-gold/15 text-brand-gold",
   HELD: "border-brand-gold/50 text-brand-gold",
   VOID: "border-brand-white/10 text-brand-slate",
 };

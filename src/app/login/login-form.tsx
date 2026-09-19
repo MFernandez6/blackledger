@@ -44,21 +44,21 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center px-6">
+    <div className="relative flex min-h-dvh flex-col items-center justify-center px-6">
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 70% 45% at 50% -10%, rgba(92,122,104,0.14), transparent)",
+            "radial-gradient(ellipse 70% 45% at 50% -10%, rgba(232,184,74,0.1), transparent)",
         }}
       />
 
       <div className="relative w-full max-w-sm">
         <div className="mb-8 text-center">
-          <p className="eyebrow mb-4">Financial ledger</p>
+          <p className="eyebrow mb-4">Internal financial system</p>
           <BlackledgerMark
             as="h1"
-            className="justify-center font-serif text-4xl font-bold tracking-[0.18em] text-brand-green-soft sm:text-5xl"
+            className="w-full justify-center font-serif text-[clamp(1.7rem,6.5vw,2.75rem)] font-bold tracking-[0.08em] text-brand-gold sm:text-4xl sm:tracking-[0.12em]"
           />
           <p className="mt-4 text-sm leading-relaxed text-brand-white/80">
             Contingency fees, payouts, and cash-flow for public adjusting staff.

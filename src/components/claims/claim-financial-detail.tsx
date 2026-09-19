@@ -111,7 +111,7 @@ export function ClaimFinancialDetail({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="eyebrow">Claim-level financials</p>
-          <h1 className="mt-2 font-mono text-2xl tracking-tight text-brand-white">
+          <h1 className="mt-2 font-serif text-3xl text-brand-gold">
             {claim.claimNumber}
           </h1>
           <p className="mt-1 text-sm text-brand-white/75">{claim.primaryClaimant}</p>
@@ -119,7 +119,7 @@ export function ClaimFinancialDetail({
         <div className="flex flex-wrap items-center gap-2">
           <ClaimStatusBadge status={claim.status} />
           {claim.isCatClaim ? (
-            <span className="border border-brand-green/40 px-2 py-0.5 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-brand-green-soft">
+            <span className="border border-brand-gold/40 px-2 py-0.5 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold">
               CAT · 10% cap
             </span>
           ) : null}
@@ -151,7 +151,7 @@ export function ClaimFinancialDetail({
         </div>
         <div className="bg-brand-navy px-5 py-5">
           <p className="eyebrow">Fee math</p>
-          <p className="mt-4 font-mono text-3xl text-brand-green-soft">
+          <p className="mt-4 font-mono text-3xl text-brand-gold">
             {formatCurrency(fee.feeEarned, { cents: true })}
           </p>
           <p className="mt-2 text-xs text-brand-slate">
@@ -224,7 +224,7 @@ export function ClaimFinancialDetail({
                       <li key={d.id}>
                         <a
                           href={d.fileUrl}
-                          className="text-brand-green-soft hover:text-brand-white"
+                          className="text-brand-gold hover:text-brand-white"
                           target="_blank"
                           rel="noreferrer"
                         >

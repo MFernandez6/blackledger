@@ -29,11 +29,11 @@ function TickerTooltip({
   if (!active || !payload?.[0]) return null;
   const point = payload[0].payload;
   return (
-    <div className="border border-brand-green/40 bg-brand-navy px-3 py-2">
+    <div className="border border-brand-gold/40 bg-brand-navy px-3 py-2">
       <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-brand-slate">
         {point.tooltipDate}
       </p>
-      <p className="mt-1 font-mono text-sm text-brand-green-soft">
+      <p className="mt-1 font-mono text-sm text-brand-gold">
         {formatCurrency(point.cumulative, { cents: true })}
       </p>
       <p className="mt-0.5 font-sans text-[10px] uppercase tracking-[0.16em] text-brand-white/60">
@@ -50,7 +50,7 @@ export function RevenueChart({ series }: Props) {
   const active = (searchParams.get("tf") as Timeframe) || series.timeframe;
 
   const data = useMemo(() => series.points, [series.points]);
-  const stroke = series.isUp ? "#5C7A68" : "#8B95A5";
+  const stroke = series.isUp ? "#C6A85B" : "#8B95A5";
   const fillId = series.isUp ? "ledgerUp" : "ledgerFlat";
 
   function setTimeframe(tf: Timeframe) {
@@ -60,7 +60,7 @@ export function RevenueChart({ series }: Props) {
   }
 
   return (
-    <section className="panel px-4 py-5 sm:px-6">
+    <section className="panel min-w-0 overflow-hidden px-4 py-5 sm:px-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="eyebrow">Fee revenue</p>
@@ -70,7 +70,7 @@ export function RevenueChart({ series }: Props) {
           <p
             className={cn(
               "mt-1 font-mono text-sm",
-              series.isUp ? "text-brand-green-soft" : "text-brand-slate"
+              series.isUp ? "text-brand-gold" : "text-brand-slate"
             )}
           >
             {series.timeframe === "ALL" ? (
@@ -104,7 +104,7 @@ export function RevenueChart({ series }: Props) {
               className={cn(
                 "px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.16em] transition-colors",
                 active === tab.id
-                  ? "bg-brand-green/20 text-brand-green-soft"
+                  ? "bg-brand-gold/20 text-brand-gold"
                   : "text-brand-slate hover:text-brand-white"
               )}
             >
@@ -114,13 +114,13 @@ export function RevenueChart({ series }: Props) {
         </div>
       </div>
 
-      <div className="mt-6 h-[280px] w-full sm:h-[340px]">
+      <div className="mt-6 h-[220px] w-full min-w-0 sm:h-[280px] lg:h-[340px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="ledgerUp" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#5C7A68" stopOpacity={0.28} />
-                <stop offset="100%" stopColor="#5C7A68" stopOpacity={0.02} />
+                <stop offset="0%" stopColor="#C6A85B" stopOpacity={0.28} />
+                <stop offset="100%" stopColor="#C6A85B" stopOpacity={0.02} />
               </linearGradient>
               <linearGradient id="ledgerFlat" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#8B95A5" stopOpacity={0.18} />
@@ -146,7 +146,7 @@ export function RevenueChart({ series }: Props) {
             />
             <Tooltip
               content={<TickerTooltip />}
-              cursor={{ stroke: "rgba(92,122,104,0.35)", strokeWidth: 1 }}
+              cursor={{ stroke: "rgba(198,168,91,0.35)", strokeWidth: 1 }}
             />
             <Area
               type="monotone"
