@@ -2,8 +2,17 @@ import { type NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { resolveStaffForLogin } from "@/lib/directory";
 import { loginSchema } from "@/lib/schemas/login";
 import type { StaffRole } from "@/lib/types";
+
+if (!process.env.NEXTAUTH_URL && process.env.VERCEL_URL) {
+  process.env.NEXTAUTH_URL = `https://${process.env.VERCEL_URL}`;
+}
+
+const useSecureCookies =
+  process.env.NEXTAUTH_URL?.startsWith("https://") ||
+  process.env.VERCEL === "1";
 
 declare module "next-auth" {
   interface Session {
@@ -31,13 +40,29 @@ declare module "next-auth/jwt" {
 }
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET,
+  useSecureCookies,
   session: {
     strategy: "jwt",
     maxAge: 8 * 60 * 60,
     updateAge: 30 * 60,
   },
+  cookies: {
+    sessionToken: {
+      name: useSecureCookies
+        ? "__Secure-next-auth.session-token"
+        : "next-auth.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: useSecureCookies,
+      },
+    },
+  },
   pages: {
     signIn: "/login",
+    error: "/login",
   },
   providers: [
     CredentialsProvider({
@@ -50,21 +75,23 @@ export const authOptions: NextAuthOptions = {
         const parsed = loginSchema.safeParse(credentials);
         if (!parsed.success) return null;
 
-        const staff = await prisma.staff.findUnique({
-          where: { email: parsed.data.email.toLowerCase() },
-        });
+        try {
+          const staff = await resolveStaffForLogin(parsed.data.email);
+          if (!staff) return null;
 
-        if (!staff || !staff.isActive) return null;
+          const valid = await compare(parsed.data.password, staff.passwordHash);
+          if (!valid) return null;
 
-        const valid = await compare(parsed.data.password, staff.passwordHash);
-        if (!valid) return null;
-
-        return {
-          id: staff.id,
-          email: staff.email,
-          name: staff.name,
-          role: staff.role as StaffRole,
-        };
+          return {
+            id: staff.id,
+            email: staff.email,
+            name: staff.name,
+            role: staff.role,
+          };
+        } catch (err) {
+          console.error("[BLACKLEDGER] sign-in directory error", err);
+          return null;
+        }
       },
     }),
   ],
