@@ -47,7 +47,7 @@ export function ReconciliationQueue({
 
   if (rows.length === 0) {
     return (
-      <p className="border border-brand-white/10 px-4 py-8 text-sm text-brand-slate">
+      <p className="border border-brand-gold/15 px-4 py-8 text-sm text-brand-slate rounded-2xl">
         Reconciliation queue is clear. Settled files with open payouts will appear here.
       </p>
     );
@@ -93,7 +93,7 @@ export function ReconciliationQueue({
         ))}
       </div>
 
-      <div className="hidden overflow-x-auto border border-brand-white/10 xl:block">
+      <div className="hidden overflow-x-auto border border-brand-gold/15 xl:block rounded-2xl">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-brand-white/10">

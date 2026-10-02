@@ -46,15 +46,8 @@ export default function LoginForm() {
 
   return (
     <div className="relative flex min-h-dvh flex-col items-center justify-center px-6">
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 45% at 50% -10%, rgba(232,184,74,0.1), transparent)",
-        }}
-      />
 
-      <div className="relative w-full max-w-sm">
+      <div className="relative w-full max-w-sm animate-fade-up motion-reduce:animate-none">
         <div className="mb-8 text-center">
           <p className="eyebrow mb-4">Internal financial system</p>
           <BlackledgerMark
@@ -67,7 +60,7 @@ export default function LoginForm() {
           </p>
         </div>
 
-        <div className="mb-8 border border-brand-white/10 bg-brand-navy-deep/40 px-4 py-5 text-center">
+        <div className="mb-8 border border-brand-gold/15 bg-brand-navy/40 px-4 py-5 text-center rounded-2xl">
           <p className="font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-brand-slate">
             Operated for
           </p>

@@ -67,7 +67,7 @@ export default async function DashboardPage({
               All files
             </Link>
           </div>
-          <div className="border border-brand-white/10">
+          <div className="border border-brand-gold/15 rounded-2xl">
             {recent.map((c) => (
               <Link
                 key={c.id}

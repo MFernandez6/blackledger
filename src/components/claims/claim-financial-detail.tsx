@@ -119,21 +119,21 @@ export function ClaimFinancialDetail({
         <div className="flex flex-wrap items-center gap-2">
           <ClaimStatusBadge status={claim.status} />
           {claim.isCatClaim ? (
-            <span className="border border-brand-gold/40 px-2 py-0.5 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold">
+            <span className="rounded-md border border-brand-gold/40 px-2 py-0.5 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold">
               CAT · 10% cap
             </span>
           ) : null}
         </div>
       </div>
 
-      <p className="border border-brand-white/10 bg-brand-navy-deep/40 px-4 py-3 text-xs leading-relaxed text-brand-slate">
+      <p className="border border-brand-gold/15 bg-brand-navy/40 px-4 py-3 text-xs leading-relaxed text-brand-slate rounded-2xl">
         Status is mirrored from BLACKBOX and is read-only in this product. You may open a
         payout, attach settlement documents, and mark disbursement — you cannot change the
         file status from BLACKLEDGER.
       </p>
 
-      <div className="grid gap-px bg-brand-white/10 lg:grid-cols-3">
-        <div className="bg-brand-navy px-5 py-5 lg:col-span-2">
+      <div className="grid gap-px overflow-hidden rounded-2xl border border-brand-gold/15 bg-brand-gold/15 lg:grid-cols-3">
+        <div className="bg-brand-tile px-5 py-5 lg:col-span-2">
           <p className="eyebrow">BLACKBOX file</p>
           <dl className="mt-4 grid gap-4 sm:grid-cols-2">
             <Field label="Loss" value={`${loss} · ${type}`} />
@@ -149,7 +149,7 @@ export function ClaimFinancialDetail({
             <Field label="Intake" value={claim.intakeNumber} />
           </dl>
         </div>
-        <div className="bg-brand-navy px-5 py-5">
+        <div className="bg-brand-tile px-5 py-5">
           <p className="eyebrow">Fee math</p>
           <p className="mt-4 font-mono text-3xl text-brand-gold">
             {formatCurrency(fee.feeEarned, { cents: true })}
@@ -171,7 +171,7 @@ export function ClaimFinancialDetail({
         </div>
       </div>
 
-      <div className="grid gap-px bg-brand-white/10 sm:grid-cols-3">
+      <div className="grid gap-px overflow-hidden rounded-2xl border border-brand-gold/15 bg-brand-gold/15 sm:grid-cols-3">
         <Money label="Estimate" value={claim.estimatedValue} />
         <Money label="Demand" value={claim.demandAmount} />
         <Money label="Settlement" value={claim.settlementAmount} />
@@ -186,7 +186,7 @@ export function ClaimFinancialDetail({
         ) : (
           <div className="mb-4 space-y-3">
             {payouts.map((p) => (
-              <div key={p.id} className="border border-brand-white/10 px-4 py-4">
+              <div key={p.id} className="border border-brand-gold/15 px-4 py-4 rounded-2xl">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <PayoutStatusBadge status={p.status} />
@@ -243,7 +243,7 @@ export function ClaimFinancialDetail({
         )}
 
         {canWrite && !openPayout && claim.settlementAmount ? (
-          <div className="border border-brand-white/10 px-4 py-4">
+          <div className="border border-brand-gold/15 px-4 py-4 rounded-2xl">
             <Label htmlFor="payout-notes">Open payout</Label>
             <Textarea
               id="payout-notes"
@@ -283,7 +283,7 @@ function Field({ label, value }: { label: string; value: string | null | undefin
 
 function Money({ label, value }: { label: string; value: number | null }) {
   return (
-    <div className="bg-brand-navy px-5 py-4">
+    <div className="bg-brand-tile px-5 py-4">
       <p className="eyebrow">{label}</p>
       <p className="mt-2 font-mono text-xl text-brand-white">
         {formatCurrency(value, { cents: true })}

@@ -14,6 +14,12 @@ import { TIMEFRAME_TABS } from "@/lib/constants";
 import type { ChartSeries } from "@/lib/chart-buckets";
 import type { Timeframe } from "@/lib/types";
 import { cn, formatCurrency, formatSignedCurrency, formatSignedPercent } from "@/lib/utils";
+import { useTheme } from "@/lib/use-theme";
+
+const CHART_COLORS = {
+  dark: { gold: "#C6A85B", slate: "#8B95A5", surface: "#0F1C2E", cursor: "rgba(198,168,91,0.35)" },
+  light: { gold: "#8A6A22", slate: "#4B5768", surface: "#F1EDE4", cursor: "rgba(138,106,34,0.35)" },
+} as const;
 
 type Props = {
   series: ChartSeries;
@@ -29,7 +35,7 @@ function TickerTooltip({
   if (!active || !payload?.[0]) return null;
   const point = payload[0].payload;
   return (
-    <div className="border border-brand-gold/40 bg-brand-navy px-3 py-2">
+    <div className="rounded-xl border border-brand-gold/40 bg-brand-navy px-3 py-2">
       <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-brand-slate">
         {point.tooltipDate}
       </p>
@@ -49,8 +55,10 @@ export function RevenueChart({ series }: Props) {
   const searchParams = useSearchParams();
   const active = (searchParams.get("tf") as Timeframe) || series.timeframe;
 
+  const { theme } = useTheme();
+  const colors = CHART_COLORS[theme];
   const data = useMemo(() => series.points, [series.points]);
-  const stroke = series.isUp ? "#C6A85B" : "#8B95A5";
+  const stroke = series.isUp ? colors.gold : colors.slate;
   const fillId = series.isUp ? "ledgerUp" : "ledgerFlat";
 
   function setTimeframe(tf: Timeframe) {
@@ -92,7 +100,7 @@ export function RevenueChart({ series }: Props) {
         <div
           role="tablist"
           aria-label="Revenue timeframe"
-          className="flex border border-brand-white/10"
+          className="flex border border-brand-gold/15 rounded-2xl"
         >
           {TIMEFRAME_TABS.map((tab) => (
             <button
@@ -119,17 +127,17 @@ export function RevenueChart({ series }: Props) {
           <AreaChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="ledgerUp" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#C6A85B" stopOpacity={0.28} />
-                <stop offset="100%" stopColor="#C6A85B" stopOpacity={0.02} />
+                <stop offset="0%" stopColor={colors.gold} stopOpacity={0.28} />
+                <stop offset="100%" stopColor={colors.gold} stopOpacity={0.02} />
               </linearGradient>
               <linearGradient id="ledgerFlat" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#8B95A5" stopOpacity={0.18} />
-                <stop offset="100%" stopColor="#8B95A5" stopOpacity={0.02} />
+                <stop offset="0%" stopColor={colors.slate} stopOpacity={0.18} />
+                <stop offset="100%" stopColor={colors.slate} stopOpacity={0.02} />
               </linearGradient>
             </defs>
             <XAxis
               dataKey="label"
-              tick={{ fill: "#8B95A5", fontSize: 10, fontFamily: "var(--font-mono)" }}
+              tick={{ fill: colors.slate, fontSize: 10, fontFamily: "var(--font-mono)" }}
               axisLine={false}
               tickLine={false}
               minTickGap={24}
@@ -139,14 +147,14 @@ export function RevenueChart({ series }: Props) {
               tickFormatter={(v: number) =>
                 v >= 1000 ? `$${(v / 1000).toFixed(0)}k` : `$${v}`
               }
-              tick={{ fill: "#8B95A5", fontSize: 10, fontFamily: "var(--font-mono)" }}
+              tick={{ fill: colors.slate, fontSize: 10, fontFamily: "var(--font-mono)" }}
               axisLine={false}
               tickLine={false}
               width={52}
             />
             <Tooltip
               content={<TickerTooltip />}
-              cursor={{ stroke: "rgba(198,168,91,0.35)", strokeWidth: 1 }}
+              cursor={{ stroke: colors.cursor, strokeWidth: 1 }}
             />
             <Area
               type="monotone"
@@ -154,7 +162,7 @@ export function RevenueChart({ series }: Props) {
               stroke={stroke}
               strokeWidth={1.5}
               fill={`url(#${fillId})`}
-              activeDot={{ r: 3, fill: stroke, stroke: "#0F1C2E", strokeWidth: 2 }}
+              activeDot={{ r: 3, fill: stroke, stroke: colors.surface, strokeWidth: 2 }}
             />
           </AreaChart>
         </ResponsiveContainer>

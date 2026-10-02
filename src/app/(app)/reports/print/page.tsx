@@ -88,7 +88,7 @@ export default async function PrintReportPage() {
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="border border-brand-white/10 px-4 py-3">
+    <div className="border border-brand-gold/15 px-4 py-3 rounded-2xl">
       <p className="eyebrow">{label}</p>
       <p className="mt-2 font-mono text-xl">{formatCurrency(value, { cents: true })}</p>
     </div>

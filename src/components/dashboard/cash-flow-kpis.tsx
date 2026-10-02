@@ -26,9 +26,9 @@ export function CashFlowKpis({ cash }: { cash: CashFlowView }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-px bg-brand-white/10 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-brand-gold/15 bg-brand-gold/15 xl:grid-cols-4">
       {cards.map((card) => (
-        <div key={card.label} className="bg-brand-navy px-4 py-5">
+        <div key={card.label} className="bg-brand-tile px-4 py-5">
           <p className="eyebrow">{card.label}</p>
           <p className="mt-3 font-mono text-2xl text-brand-white sm:text-3xl">
             {formatCurrency(card.value, { cents: true })}

@@ -18,7 +18,7 @@ export function AgingTable({ aging }: { aging: AgingBucket[] }) {
           {formatCurrency(total, { cents: true })} · {count}
         </p>
       </div>
-      <div className="overflow-x-auto border border-brand-white/10">
+      <div className="overflow-x-auto border border-brand-gold/15 rounded-2xl">
         <table className="w-full min-w-[480px] text-left text-sm">
           <thead>
             <tr className="border-b border-brand-white/10">

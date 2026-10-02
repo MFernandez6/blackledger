@@ -64,7 +64,7 @@ export default async function ClaimsPage() {
         )}
       </div>
 
-      <div className="hidden overflow-x-auto border border-brand-white/10 xl:block">
+      <div className="hidden overflow-x-auto border border-brand-gold/15 xl:block rounded-2xl">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-brand-white/10">

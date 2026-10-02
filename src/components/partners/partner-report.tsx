@@ -52,15 +52,15 @@ export function PartnerReport({
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-3 gap-px bg-brand-white/10">
+      <div className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-brand-gold/15 bg-brand-gold/15">
         <Stat label="Accrued" value={totals.all} />
         <Stat label="Due" value={totals.due} />
         <Stat label="Paid" value={totals.paid} />
       </div>
 
-      <div className="space-y-px bg-brand-white/10 xl:hidden">
+      <div className="space-y-px overflow-hidden rounded-2xl border border-brand-gold/15 bg-brand-gold/15 xl:hidden">
         {rows.map((row) => (
-          <div key={row.id} className="bg-brand-navy px-4 py-4">
+          <div key={row.id} className="bg-brand-tile px-4 py-4">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-sm text-brand-white">{row.partnerName}</p>
@@ -94,7 +94,7 @@ export function PartnerReport({
         ))}
       </div>
 
-      <div className="hidden overflow-x-auto border border-brand-white/10 xl:block">
+      <div className="hidden overflow-x-auto border border-brand-gold/15 xl:block rounded-2xl">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-brand-white/10">
@@ -152,7 +152,7 @@ export function PartnerReport({
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="bg-brand-navy px-4 py-4">
+    <div className="bg-brand-tile px-4 py-4">
       <p className="eyebrow">{label}</p>
       <p className="mt-2 font-mono text-lg text-brand-white sm:text-xl">
         {formatCurrency(value, { cents: true })}
