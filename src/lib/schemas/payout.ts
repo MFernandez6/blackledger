@@ -9,16 +9,17 @@ export const createPayoutSchema = z.object({
   notes: z.string().max(2000).optional(),
 });
 
+/** `payoutStatus` / `splitStatus`, never bare `status` — the claim boundary rejects that key. */
 export const updatePayoutSchema = z.object({
   payoutId: z.string().min(1),
-  status: payoutStatusSchema.optional(),
+  payoutStatus: payoutStatusSchema.optional(),
   disbursementDate: z.string().optional().nullable(),
   notes: z.string().max(2000).optional().nullable(),
 });
 
 export const updateSplitSchema = z.object({
   splitId: z.string().min(1),
-  status: splitStatusSchema.optional(),
+  splitStatus: splitStatusSchema.optional(),
   paidAt: z.string().optional().nullable(),
   notes: z.string().max(2000).optional().nullable(),
 });

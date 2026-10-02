@@ -35,7 +35,7 @@ export function ReconciliationQueue({
 
   async function setStatus(id: string, status: PayoutStatus) {
     setBusy(id);
-    const res = await updatePayoutAction({ payoutId: id, status });
+    const res = await updatePayoutAction({ payoutId: id, payoutStatus: status });
     setBusy(null);
     if (!res.ok) {
       toast.error(res.error);

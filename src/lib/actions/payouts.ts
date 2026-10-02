@@ -149,7 +149,7 @@ export async function updatePayoutAction(
     });
     if (!current) return { ok: false, error: "Payout not found." };
 
-    const nextStatus = parsed.data.status ?? current.status;
+    const nextStatus = parsed.data.payoutStatus ?? current.status;
     let disbursementDate = current.disbursementDate;
     if (parsed.data.disbursementDate !== undefined) {
       disbursementDate = parsed.data.disbursementDate
@@ -213,7 +213,7 @@ export async function updateSplitAction(
     });
     if (!current) return { ok: false, error: "Split not found." };
 
-    const nextStatus = parsed.data.status ?? current.status;
+    const nextStatus = parsed.data.splitStatus ?? current.status;
     let paidAt = current.paidAt;
     if (parsed.data.paidAt !== undefined) {
       paidAt = parsed.data.paidAt ? new Date(parsed.data.paidAt) : null;

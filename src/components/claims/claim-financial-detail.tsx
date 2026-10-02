@@ -93,7 +93,7 @@ export function ClaimFinancialDetail({
 
   async function markDisbursed(id: string) {
     setBusy(true);
-    const res = await updatePayoutAction({ payoutId: id, status: "DISBURSED" });
+    const res = await updatePayoutAction({ payoutId: id, payoutStatus: "DISBURSED" });
     setBusy(false);
     if (!res.ok) {
       toast.error(res.error);

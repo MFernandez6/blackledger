@@ -30,7 +30,7 @@ export function PartnerReport({
 
   async function markPaid(id: string) {
     setBusy(id);
-    const res = await updateSplitAction({ splitId: id, status: "PAID" });
+    const res = await updateSplitAction({ splitId: id, splitStatus: "PAID" });
     setBusy(null);
     if (!res.ok) {
       toast.error(res.error);
