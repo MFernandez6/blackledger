@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { canWriteFinance, getSession, resolveSessionStaff } from "@/lib/auth";
 import { logLedgerAudit } from "@/lib/actions/audit";
 import { prisma } from "@/lib/prisma";
+import {
+  ALLOWED_UPLOAD_SUMMARY,
+  detectAllowedFile,
+} from "@/lib/security/file-signature";
 import { storePayoutDocument } from "@/lib/storage";
 
 export const runtime = "nodejs";
@@ -30,6 +34,16 @@ export async function POST(req: NextRequest) {
   if (!payout) return NextResponse.json({ error: "Payout not found." }, { status: 404 });
 
   const bytes = Buffer.from(await file.arrayBuffer());
+  if (bytes.length > 20 * 1024 * 1024) {
+    return NextResponse.json({ error: "File exceeds 20MB limit." }, { status: 413 });
+  }
+  const detected = detectAllowedFile(bytes, file.name || "upload.bin");
+  if (!detected) {
+    return NextResponse.json(
+      { error: `Unsupported file type. Allowed: ${ALLOWED_UPLOAD_SUMMARY}.` },
+      { status: 415 }
+    );
+  }
   const stored = await storePayoutDocument({
     payoutId,
     fileName: file.name,
@@ -42,7 +56,7 @@ export async function POST(req: NextRequest) {
       fileName: file.name,
       fileUrl: stored.fileUrl,
       fileSizeBytes: bytes.length,
-      mimeType: file.type || "application/octet-stream",
+      mimeType: detected.mime,
       uploadedById: staff.id,
     },
   });
