@@ -7,11 +7,32 @@ import { OPEN_PAYOUT_STATUSES } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
-export default async function PayoutsPage() {
+const PAGE_SIZE = 50;
+
+export default async function PayoutsPage({
+  searchParams,
+}: {
+  searchParams: { page?: string };
+}) {
   const session = await getSession();
+  const where = { status: { in: [...OPEN_PAYOUT_STATUSES] } };
+  const requested = Math.max(1, Number.parseInt(searchParams.page ?? "1", 10) || 1);
+  const total = await prisma.payout.count({ where });
+  const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const page = Math.min(requested, pageCount);
   const payouts = await prisma.payout.findMany({
-    where: { status: { in: [...OPEN_PAYOUT_STATUSES] } },
-    include: {
+    where,
+    skip: (page - 1) * PAGE_SIZE,
+    take: PAGE_SIZE,
+    select: {
+      id: true,
+      claimSnapshotId: true,
+      claimNumber: true,
+      settlementAmount: true,
+      feeEarned: true,
+      status: true,
+      createdAt: true,
+      notes: true,
       claim: { select: { primaryClaimant: true } },
       documents: { select: { id: true } },
     },
@@ -51,6 +72,31 @@ export default async function PayoutsPage() {
           docCount: p.documents.length,
         }))}
       />
+      {total > 0 ? (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="font-mono text-xs text-brand-slate">
+            {Math.min((page - 1) * PAGE_SIZE + 1, total)}–{Math.min(page * PAGE_SIZE, total)} of {total}
+          </p>
+          {pageCount > 1 ? (
+            <div className="flex gap-3 text-sm">
+              {page > 1 ? (
+                <Link href={page <= 2 ? "/payouts" : `/payouts?page=${page - 1}`} className="text-brand-gold">
+                  Previous
+                </Link>
+              ) : (
+                <span className="text-brand-slate">Previous</span>
+              )}
+              {page < pageCount ? (
+                <Link href={`/payouts?page=${page + 1}`} className="text-brand-gold">
+                  Next
+                </Link>
+              ) : (
+                <span className="text-brand-slate">Next</span>
+              )}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }
