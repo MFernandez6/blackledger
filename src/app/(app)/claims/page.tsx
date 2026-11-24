@@ -8,11 +8,39 @@ import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
-export default async function ClaimsPage() {
+const PAGE_SIZE = 50;
+
+export default async function ClaimsPage({
+  searchParams,
+}: {
+  searchParams: { page?: string };
+}) {
   await refreshSuiteClaimsIfStale();
+  const requested = Math.max(1, Number.parseInt(searchParams.page ?? "1", 10) || 1);
+  const total = await prisma.claimSnapshot.count();
+  const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const page = Math.min(requested, pageCount);
   const claims = await prisma.claimSnapshot.findMany({
     orderBy: { updatedAt: "desc" },
-    include: { payouts: { where: { status: { not: "VOID" } }, take: 1 } },
+    skip: (page - 1) * PAGE_SIZE,
+    take: PAGE_SIZE,
+    select: {
+      id: true,
+      claimNumber: true,
+      primaryClaimant: true,
+      lossType: true,
+      isCatClaim: true,
+      claimType: true,
+      status: true,
+      settlementAmount: true,
+      demandAmount: true,
+      estimatedValue: true,
+      payouts: {
+        where: { status: { not: "VOID" } },
+        take: 1,
+        select: { status: true },
+      },
+    },
   });
 
   return (
@@ -117,6 +145,31 @@ export default async function ClaimsPage() {
           </tbody>
         </table>
       </div>
+      {total > 0 ? (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="font-mono text-xs text-brand-slate">
+            {Math.min((page - 1) * PAGE_SIZE + 1, total)}–{Math.min(page * PAGE_SIZE, total)} of {total}
+          </p>
+          {pageCount > 1 ? (
+            <div className="flex gap-3 text-sm">
+              {page > 1 ? (
+                <Link href={page <= 2 ? "/claims" : `/claims?page=${page - 1}`} className="text-brand-gold">
+                  Previous
+                </Link>
+              ) : (
+                <span className="text-brand-slate">Previous</span>
+              )}
+              {page < pageCount ? (
+                <Link href={`/claims?page=${page + 1}`} className="text-brand-gold">
+                  Next
+                </Link>
+              ) : (
+                <span className="text-brand-slate">Next</span>
+              )}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }
