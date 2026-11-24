@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { resolveStaffForLogin } from "@/lib/directory";
 import { loginSchema } from "@/lib/schemas/login";
 import type { StaffRole } from "@/lib/types";
+import { safeEqual } from "@/lib/security/safe-compare";
 
 if (!process.env.NEXTAUTH_URL && process.env.VERCEL_URL) {
   process.env.NEXTAUTH_URL = `https://${process.env.VERCEL_URL}`;
@@ -179,5 +180,5 @@ export function isServiceKey(header: string | null): boolean {
   const key = process.env.BLACKLEDGER_API_KEY;
   if (!key || !header) return false;
   const token = header.startsWith("Bearer ") ? header.slice(7) : header;
-  return token === key;
+  return safeEqual(token, key);
 }
