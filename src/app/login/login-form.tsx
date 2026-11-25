@@ -16,6 +16,8 @@ import { BlacklineLogo } from "@/components/brand/blackline-mark";
 
 type LoginValues = z.infer<typeof loginSchema>;
 
+const PASSWORD_RESET_URL = `${(process.env.NEXT_PUBLIC_BLACKBOX_URL || "https://box.blacklinepublicadjusters.com").replace(/\/$/, "")}/forgot-password`;
+
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -122,6 +124,11 @@ export default function LoginForm() {
           >
             {isSubmitting ? "Authenticating…" : "Enter BLACKLEDGER™"}
           </Button>
+          <p className="text-center text-sm">
+            <a href={PASSWORD_RESET_URL} className="text-brand-gold underline underline-offset-4">
+              Forgot password?
+            </a>
+          </p>
         </form>
 
         <p className="mt-8 text-center font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-brand-slate">
