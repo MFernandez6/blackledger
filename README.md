@@ -52,7 +52,7 @@ Open [http://localhost:3003](http://localhost:3003).
 
 | Role | Email | Password |
 |---|---|---|
-| Admin | `miguel@blacklinepa.com` | `Password123!` |
+| Admin | `miguel.fernandez@blacklinepublicadjusters.com` | `Password123!` |
 | Finance | `finance@blacklinepa.com` | `Password123!` |
 | Viewer | `viewer@blacklinepa.com` | `Password123!` |
 

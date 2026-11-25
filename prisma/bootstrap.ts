@@ -17,7 +17,7 @@ const SEED_PASSWORD = "Password123!";
 const STAFF = [
   {
     name: "Miguel Fernandez",
-    email: "miguel@blacklinepa.com",
+    email: "miguel.fernandez@blacklinepublicadjusters.com",
     role: "ADMIN",
   },
   {
